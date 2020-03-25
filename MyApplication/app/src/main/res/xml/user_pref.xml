@@ -1,0 +1,21 @@
+<PreferenceScreen
+        xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools" tools:ignore="all"
+        android:id="@+id/settings"
+>
+
+    <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="prefNotification"
+            android:summary="Enable notifications"
+            android:title="Notification" >
+    </CheckBoxPreference>
+    <ListPreference
+            android:key="prefUpdateColor"
+            android:title="Color"
+            android:summary="Set color"
+            android:entries="@array/colorArray"
+            android:entryValues="@array/colorValues"
+    />
+
+</PreferenceScreen>

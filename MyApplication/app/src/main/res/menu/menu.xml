@@ -5,7 +5,7 @@
           android:title=" Log in"
           app:showAsAction="never" />
     <item android:id="@+id/item2"
-          android:title=" Contact us"
+          android:title="Settings"
           app:showAsAction="never" />
     <item android:id="@+id/item3"
           android:title="Send"
