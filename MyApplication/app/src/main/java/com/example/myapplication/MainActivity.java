@@ -47,10 +47,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", 0); // 0 - for private mode
-//        SharedPreferences.Editor editor = pref.edit();
         String color = pref.getString("color", "0");
         Log.i(TAG, color);
-//        View mview = findViewById(R.id.main_view);
         View mview;
         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
             //Do some stuff
@@ -143,9 +141,15 @@ public class MainActivity extends AppCompatActivity {
         } else if (item.getItemId() == R.id.item2) {
             openSettings();
         }
+        else if (item.getItemId()==R.id.item4){
+            openSensors();
+        }
         return true;
     }
-
+    public void openSensors(){
+        Intent intent=new Intent(this, Main4Activity.class);
+        startActivity(intent);
+    }
     public void openSettings() {
         Intent intent = new Intent(this, Activity3.class);
         startActivity(intent);
