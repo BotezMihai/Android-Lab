@@ -144,7 +144,14 @@ public class MainActivity extends AppCompatActivity {
         else if (item.getItemId()==R.id.item4){
             openSensors();
         }
+        else if(item.getItemId()==R.id.item5){
+            openCamera();
+        }
         return true;
+    }
+    public void openCamera(){
+        Intent intent = new Intent(this, Main7Activity.class);
+        startActivity(intent);
     }
     public void openSensors(){
         Intent intent=new Intent(this, Main4Activity.class);
