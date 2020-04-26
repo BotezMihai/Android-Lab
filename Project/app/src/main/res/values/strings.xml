@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">GuessTheLogo</string>
+    <string name="title_activity_new_game">NewGame</string>
+    <string-array name="logos">
+        <item>img1</item>
+        <item>img2</item>
+        <item>img3</item>
+        <item>img4</item>
+        <item>img5</item>
+    </string-array>
+    <string-array name="answers">
+        <item>mastercard</item>
+        <item>volkswagen</item>
+        <item>apple</item>
+        <item>pepsi</item>
+        <item>kfc</item>
+    </string-array>
+</resources>
