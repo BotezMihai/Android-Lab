@@ -1,9 +1,12 @@
 package com.example.guessthelogo;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.HashMap;
 import java.util.Map;
 
-public class Quiz {
+public class Quiz implements Parcelable {
     private String question;
     private String answer;
 
@@ -11,7 +14,25 @@ public class Quiz {
         this.question=question;
         this.answer=answer;
     }
-    public boolean checkAnswer(String logo,String answer){
+
+    protected Quiz(Parcel in) {
+        question = in.readString();
+        answer = in.readString();
+    }
+
+    public static final Creator<Quiz> CREATOR = new Creator<Quiz>() {
+        @Override
+        public Quiz createFromParcel(Parcel in) {
+            return new Quiz(in);
+        }
+
+        @Override
+        public Quiz[] newArray(int size) {
+            return new Quiz[size];
+        }
+    };
+
+    public boolean checkAnswer(String logo, String answer){
         return this.answer.equals(answer);
     }
 
@@ -37,5 +58,16 @@ public class Quiz {
 
     static public String messageCorrectAnswer(){
         return "Correct!";
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(question);
+        dest.writeString(answer);
     }
 }
