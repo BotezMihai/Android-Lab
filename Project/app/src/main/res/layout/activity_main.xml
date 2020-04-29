@@ -1,4 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:tools="http://schemas.android.com/tools"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent">
 <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
@@ -8,24 +13,35 @@
         tools:context=".MainActivity"
         android:orientation="vertical"
         android:gravity="center"
+        android:background="#ffffff"
         >
-
+    <ImageView android:layout_width="fill_parent" android:layout_height="wrap_content" android:src="@drawable/quiz_good"
+                android:scaleY="0.5"
+                android:scaleX="0.5"
+               android:adjustViewBounds="true"/>
 
     <Button
             android:text="New Game"
+            android:textColor="#ffffff"
+            android:background = "@drawable/roundedbutton"
             android:layout_width="300dp"
             android:layout_height="wrap_content" android:id="@+id/button"
             android:layout_marginBottom="15dp"
             android:padding="20dp"/>
     <Button
             android:text="HighScore"
+            android:textColor="#ffffff"
+            android:background = "@drawable/roundedbutton"
             android:layout_width="300dp"
             android:layout_height="wrap_content" android:id="@+id/button2"
             android:padding="20dp"
             android:layout_marginBottom="15dp"/>
     <Button
             android:text="About"
+            android:textColor="#ffffff"
+            android:background = "@drawable/roundedbutton"
             android:layout_width="300dp"
             android:layout_height="wrap_content" android:id="@+id/button3"
             android:padding="20dp"/>
 </LinearLayout>
+    </ScrollView>

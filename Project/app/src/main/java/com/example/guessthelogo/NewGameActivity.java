@@ -1,12 +1,19 @@
 package com.example.guessthelogo;
 
+import android.app.ActionBar;
+import android.app.AlertDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
+import android.graphics.Color;
+import android.graphics.Matrix;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
-import android.view.KeyEvent;
-import android.view.View;
-import android.view.ViewGroup;
+import android.view.*;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.*;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -15,8 +22,11 @@ import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.stream.Collectors;
+
+import static android.widget.ImageView.ScaleType.CENTER;
 
 public class NewGameActivity extends AppCompatActivity {
     private static final String TAG = "NewGameActivity";
@@ -25,6 +35,61 @@ public class NewGameActivity extends AppCompatActivity {
     private ArrayList<Quiz> quiz;
     private int currentIndex = 0;
     private int points = 0;
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater=getMenuInflater();
+        inflater.inflate(R.menu.game_menu, menu);
+        return true;
+    }
+    void startNewGame(){
+        Intent newGame=new Intent(NewGameActivity.this, NewGameActivity.class);
+        startActivity(newGame);
+        this.finish();
+    }
+    void shareHighScore(){
+        Intent sendIntent = new Intent();
+        sendIntent.setAction(Intent.ACTION_SEND);
+        sendIntent.putExtra(Intent.EXTRA_TEXT, "I have " + String.valueOf(points) + " " + " points in GuessTheLogo!");
+        sendIntent.setType("text/plain");
+        Intent shareIntent = Intent.createChooser(sendIntent, null);
+        startActivity(shareIntent);
+    }
+    void getHighScore(){
+        ArrayList<Integer> scores;
+        SharedPreferences sharedPreferences = getSharedPreferences("highScores", MODE_PRIVATE);
+        Gson gson = new Gson();
+        String json = sharedPreferences.getString("scores", null);
+        Type type = new TypeToken<ArrayList<Integer>>() {
+        }.getType();
+        scores = gson.fromJson(json, type);
+        String message;
+        if(scores==null){
+            message="There's no score!";
+        } else {
+            message=String.valueOf(scores.get(0));
+        }
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("HighScore");
+        builder.setMessage("The highest score is: "+message);
+        AlertDialog alertDialog=builder.create();
+        alertDialog.show();
+    }
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.item1:
+                startNewGame();
+                return true;
+            case R.id.item2:
+                getHighScore();
+                return true;
+            case R.id.item3:
+                shareHighScore();
+                return true;
+        }
+        return true;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,11 +118,17 @@ public class NewGameActivity extends AppCompatActivity {
             for (int index = 0; index < questions.length; index++) {
                 quiz.add(new Quiz(questions[index], answers[index]));
             }
+            Collections.shuffle(quiz);
         }
-
         final ImageView imageView = new ImageView(this);
         imageView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         final Integer imgResId = getResources().getIdentifier(quiz.get(currentIndex).getQuestion(), "drawable", NewGameActivity.this.getPackageName());
+        GradientDrawable border = new GradientDrawable();
+        border.setColor(0xFFFFFFFF); //white background
+        border.setStroke(5, 0xFF000000);
+        imageView.setBackground(border);
+        imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
+        imageView.setPadding(5,5,5,5);
         imageView.setImageResource(imgResId);
         LinearLayout linearLayout = findViewById(R.id.newGame);
         linearLayout.addView(imageView);
@@ -66,6 +137,14 @@ public class NewGameActivity extends AppCompatActivity {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    editText.clearFocus();
+                    View view = getCurrentFocus();
+                    int orientation = getResources().getConfiguration().orientation;
+                    if (view != null && orientation== Configuration.ORIENTATION_LANDSCAPE) {
+                        InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+
+                    }
                     String text = editText.getText().toString().trim().toLowerCase();
                     if (currentIndex == 0) {
                         checkAnswer(text);
